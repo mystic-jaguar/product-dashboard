@@ -8,9 +8,9 @@ type Props = { products: Product[]; onDelete: (p: Product) => void };
 // Desktop view (md and up).
 export default function ProductTable({ products, onDelete }: Props) {
   return (
-    <div className="hidden overflow-x-auto rounded-lg border border-gray-200 bg-white md:block">
+    <div className="hidden max-h-[70vh] overflow-auto rounded-lg border border-gray-200 bg-white md:block">
       <table className="w-full text-left text-sm">
-        <thead className="bg-gray-50 text-gray-600">
+        <thead className="sticky top-0 bg-gray-50 text-gray-600">
           <tr>
             <th className="p-3">Image</th>
             <th className="p-3">Title</th>
@@ -25,7 +25,7 @@ export default function ProductTable({ products, onDelete }: Props) {
           {products.map((p) => (
             <tr key={p.id} className="border-t border-gray-100">
               <td className="p-3"><Thumb src={p.thumbnail} alt={p.title} /></td>
-              <td className="p-3 font-medium">{p.title}</td>
+              <td className="max-w-xs truncate p-3 font-medium" title={p.title}>{p.title}</td>
               <td className="p-3 capitalize">{formatCategory(p.category)}</td>
               <td className="p-3 text-right">{formatPrice(p.price)}</td>
               <td className="p-3 text-right">{p.rating ? `★ ${p.rating.toFixed(1)}` : "–"}</td>

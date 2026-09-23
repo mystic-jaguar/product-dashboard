@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/services/auth";
 import { getToken, setToken } from "@/lib/token";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,22 +41,26 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center p-4">
-      <form onSubmit={onSubmit} className="w-full max-w-sm space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-semibold">Admin login</h1>
-        <label className="block text-sm">
+    <main className="relative flex flex-1 items-center justify-center p-4">
+      <div className="absolute right-4 top-4"><ThemeToggle /></div>
+      <form onSubmit={onSubmit} className="card w-full max-w-sm space-y-4 p-7">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight">Admin login</h1>
+          <p className="text-sm text-fg-2">Sign in to manage your products.</p>
+        </div>
+        <label className="block text-sm font-medium">
           Username
           <input className="input mt-1" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" />
         </label>
-        <label className="block text-sm">
+        <label className="block text-sm font-medium">
           Password
           <input className="input mt-1" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
         </label>
-        {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+        {error && <p role="alert" className="text-sm text-danger">{error}</p>}
         <button type="submit" disabled={loading} className="btn-primary w-full">
           {loading ? "Logging in…" : "Log in"}
         </button>
-        <p className="text-xs text-gray-500">Demo: emilys / emilyspass</p>
+        <p className="text-center text-xs text-muted">Demo: emilys / emilyspass</p>
       </form>
     </main>
   );

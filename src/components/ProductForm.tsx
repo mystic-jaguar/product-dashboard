@@ -60,7 +60,7 @@ export default function ProductForm({ initial, submitLabel, onSubmit, onCancel }
     : [{ slug: values.category, name: values.category }, ...categories];
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-4 rounded-lg border border-gray-200 bg-white p-5">
+    <form onSubmit={handleSubmit} noValidate className="space-y-4 card p-6">
       <Field label="Title" error={errors.title}>
         <input className="input" value={values.title} onChange={set("title")} aria-invalid={!!errors.title} />
       </Field>
@@ -87,7 +87,7 @@ export default function ProductForm({ initial, submitLabel, onSubmit, onCancel }
         </Field>
       </div>
 
-      {submitError && <p role="alert" className="text-sm text-red-600">{submitError}</p>}
+      {submitError && <p role="alert" className="text-sm text-danger">{submitError}</p>}
 
       <div className="flex justify-end gap-2">
         <button type="button" className="btn" onClick={onCancel} disabled={saving}>Cancel</button>

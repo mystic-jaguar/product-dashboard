@@ -14,12 +14,12 @@ export default function Pagination({ page, limit, total, onPage }: Props) {
 
   return (
     <nav aria-label="Pagination" className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-      <p className="text-sm text-gray-600">Showing {from}–{to} of {total}</p>
+      <p className="text-sm text-fg-2">Showing {from}–{to} of {total}</p>
       <div className="flex flex-wrap items-center gap-1">
         <button className="btn" disabled={page <= 1} onClick={() => onPage(page - 1)}>Previous</button>
         {pageList(page, totalPages).map((p, i) =>
           p === "…" ? (
-            <span key={`gap-${i}`} className="px-2 text-gray-400">…</span>
+            <span key={`gap-${i}`} className="px-2 text-muted">…</span>
           ) : (
             <button
               key={p}

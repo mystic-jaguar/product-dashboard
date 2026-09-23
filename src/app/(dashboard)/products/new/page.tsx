@@ -8,7 +8,7 @@ export default function NewProductPage() {
   const router = useRouter();
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-2xl font-semibold">Add product</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">Add product</h1>
       <ProductForm
         submitLabel="Add product"
         onCancel={() => router.back()}

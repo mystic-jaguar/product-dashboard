@@ -19,7 +19,7 @@ export default function EditProductPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-2xl font-semibold">Edit product</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">Edit product</h1>
       <ProductForm
         submitLabel="Save changes"
         initial={{

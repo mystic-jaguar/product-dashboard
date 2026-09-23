@@ -10,7 +10,7 @@ export default function ProductGallery({ images, title }: { images: string[]; ti
   return (
     <div className="space-y-2">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={images[active]} alt={title} className="aspect-square w-full rounded-lg border border-gray-200 bg-white object-contain" />
+      <img src={images[active]} alt={title} className="aspect-square w-full rounded-xl border border-edge bg-white/70 object-contain" />
       {images.length > 1 && (
         <div className="flex flex-wrap gap-2">
           {images.map((src, i) => (
@@ -18,7 +18,7 @@ export default function ProductGallery({ images, title }: { images: string[]; ti
               key={src}
               onClick={() => setActive(i)}
               aria-label={`Show image ${i + 1}`}
-              className={`rounded border-2 ${i === active ? "border-blue-600" : "border-transparent"}`}
+              className={`rounded-lg border-2 transition ${i === active ? "border-accent" : "border-transparent opacity-70 hover:opacity-100"}`}
             >
               <Thumb src={src} alt="" size={56} />
             </button>

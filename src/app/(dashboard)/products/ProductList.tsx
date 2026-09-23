@@ -45,14 +45,19 @@ export default function ProductList() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-2xl font-semibold">Products</h1>
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight">Products</h1>
+          {data && <p className="text-sm text-fg-2">{data.total} items in catalogue</p>}
+        </div>
         <Link href="/products/new" className="btn-primary">Add product</Link>
       </div>
 
-      <SearchBox value={query.q} onSearch={onSearch} />
-      <Filters query={query} categories={categories} onChange={update} />
+      <div className="card space-y-2 p-3">
+        <SearchBox value={query.q} onSearch={onSearch} />
+        <Filters query={query} categories={categories} onChange={update} />
+      </div>
       {query.q && (
-        <p className="text-xs text-gray-500">Searching all categories. Choosing a category clears the search.</p>
+        <p className="text-xs text-muted">Searching all categories. Choosing a category clears the search.</p>
       )}
 
       {error ? (

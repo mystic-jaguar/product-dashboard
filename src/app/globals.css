@@ -1,22 +1,121 @@
 @import "tailwindcss";
 
+/* Theme mirrors jay-algo-backtester: Apple-style glass over soft colour blobs. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --page: #f5f5f7;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --muted: #6e6d68;
+  --border: #0b0b0b1a;
+  --glass: #ffffff8c;
+  --glass-field: #ffffff99;
+  --glass-edge: #ffffffb3;
+  --glass-shadow: 0 8px 32px #1f263c14;
+  --glass-pop: #fafafcd9;
+  --accent: #007aff;
+  --accent-hover: #0066d6;
+  --danger: #d03b3b;
+  --good: #0a8a0a;
+  --star: #f5a623;
+  --blob-1: #007aff2e;
+  --blob-2: #af52de24;
+  --blob-3: #34c7591f;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --muted: #98978f;
+  --border: #ffffff1a;
+  --glass: #28282c80;
+  --glass-field: #ffffff0f;
+  --glass-edge: #ffffff1f;
+  --glass-shadow: 0 8px 32px #00000059;
+  --glass-pop: #242428f2;
+  --accent: #0a84ff;
+  --accent-hover: #3d9bff;
+  --danger: #ff6961;
+  --good: #30d158;
+  --blob-1: #0a84ff38;
+  --blob-2: #bf5af229;
+  --blob-3: #30d1581a;
+}
+
+@theme inline {
+  --color-fg: var(--text-primary);
+  --color-fg-2: var(--text-secondary);
+  --color-muted: var(--muted);
+  --color-edge: var(--border);
+  --color-glass: var(--glass);
+  --color-field: var(--glass-field);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-good: var(--good);
+  --color-star: var(--star);
+}
+
 body {
-  background: #f9fafb;
-  color: #111827;
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  background: var(--page);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", var(--font-geist-sans), sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Fixed blurred blobs behind everything. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 40% at 15% 10%, var(--blob-1), transparent 70%),
+    radial-gradient(35% 35% at 90% 20%, var(--blob-2), transparent 70%),
+    radial-gradient(40% 40% at 50% 100%, var(--blob-3), transparent 70%);
+  filter: blur(40px);
 }
 
 @layer components {
+  .card {
+    background: var(--glass);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 16px;
+  }
   .input {
-    @apply w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200;
+    @apply w-full rounded-[10px] border border-edge bg-field px-3 py-2 text-sm text-fg outline-none transition placeholder:text-muted focus:border-accent focus:ring-3 focus:ring-accent/25;
+    backdrop-filter: blur(12px);
+  }
+  .input[aria-invalid="true"] {
+    @apply border-danger focus:ring-danger/25;
+  }
+  select.input option {
+    background: var(--page);
+    color: var(--text-primary);
+  }
+  .btn,
+  .btn-primary,
+  .btn-danger {
+    @apply inline-flex min-h-9 cursor-pointer items-center justify-center gap-1.5 rounded-[10px] px-3.5 py-2 text-sm font-medium outline-none transition active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-accent/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
   }
   .btn {
-    @apply inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-1 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply border border-edge bg-field text-fg hover:bg-fg/10;
+    backdrop-filter: blur(12px);
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply bg-accent text-white shadow-[0_4px_14px_-4px_var(--accent)] hover:bg-(--accent-hover);
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply bg-danger text-white hover:brightness-110;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
 }

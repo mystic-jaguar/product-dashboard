@@ -6,7 +6,7 @@ export default function Field({ label, error, children }: Props) {
     <label className="block text-sm">
       <span className="mb-1 block font-medium">{label}</span>
       {children}
-      {error && <span className="mt-1 block text-xs text-red-600">{error}</span>}
+      {error && <span className="mt-1 block text-xs text-danger">{error}</span>}
     </label>
   );
 }

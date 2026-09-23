@@ -5,7 +5,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <AuthGuard>
       <Header />
-      <main className="mx-auto w-full max-w-6xl flex-1 p-4">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">{children}</main>
     </AuthGuard>
   );
 }

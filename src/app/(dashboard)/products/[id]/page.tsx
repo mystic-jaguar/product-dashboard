@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useProduct } from "@/hooks/useProduct";
 import { useDeleteProduct } from "@/hooks/useDeleteProduct";
 import { formatCategory, formatPrice } from "@/lib/format";
-import Loader from "@/components/Loader";
+import { DetailSkeleton } from "@/components/Skeleton";
 import NotFound from "@/components/NotFound";
 import ProductGallery from "@/components/ProductGallery";
 import ReviewList from "@/components/ReviewList";
@@ -19,7 +19,7 @@ export default function ProductDetailsPage() {
   const del = useDeleteProduct(() => router.replace("/products"));
 
   if (notFound) return <NotFound />;
-  if (loading) return <Loader />;
+  if (loading) return <DetailSkeleton />;
   if (error || !product) return <ErrorState message={error || "Something went wrong"} onRetry={retry} />;
 
   return (

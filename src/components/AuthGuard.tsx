@@ -3,7 +3,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { getToken } from "@/lib/token";
-import Loader from "./Loader";
+import { ListSkeleton } from "./Skeleton";
 
 const noSubscribe = () => () => {};
 
@@ -17,5 +17,5 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     if (token === null) router.replace("/login");
   }, [token, router]);
 
-  return token ? children : <Loader />;
+  return token ? children : <ListSkeleton />;
 }

@@ -12,7 +12,7 @@ import Filters from "@/components/Filters";
 import ProductTable from "@/components/ProductTable";
 import ProductCards from "@/components/ProductCards";
 import Pagination from "@/components/Pagination";
-import Loader from "@/components/Loader";
+import { ListSkeleton } from "@/components/Skeleton";
 import ConfirmDialog from "@/components/ConfirmDialog";
 import { EmptyState, ErrorState } from "@/components/StatusViews";
 
@@ -62,13 +62,12 @@ export default function ProductList() {
 
       {error ? (
         <ErrorState message={error} onRetry={retry} />
-      ) : (loading && !data) || (data && query.page > totalPages) ? (
-        <Loader />
+      ) : loading || (data && query.page > totalPages) ? (
+        <ListSkeleton rows={query.limit} />
       ) : data && data.products.length === 0 ? (
         <EmptyState message={query.q ? `No products match "${query.q}".` : "No products found."} />
       ) : data ? (
-        // Keep old rows visible but faded while the next page loads, so the layout doesn't jump.
-        <div className={loading ? "pointer-events-none opacity-50 transition-opacity" : ""} aria-busy={loading}>
+        <div>
           <ProductTable products={data.products} onDelete={del.ask} />
           <ProductCards products={data.products} onDelete={del.ask} />
         </div>

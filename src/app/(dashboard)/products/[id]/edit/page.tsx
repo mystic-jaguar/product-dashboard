@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useProduct } from "@/hooks/useProduct";
 import { updateProduct } from "@/services/products";
 import ProductForm from "@/components/ProductForm";
-import Loader from "@/components/Loader";
+import { FormSkeleton } from "@/components/Skeleton";
 import NotFound from "@/components/NotFound";
 import { ErrorState } from "@/components/StatusViews";
 
@@ -14,7 +14,7 @@ export default function EditProductPage() {
   const { product, loading, error, notFound, retry } = useProduct(id);
 
   if (notFound) return <NotFound />;
-  if (loading) return <Loader />;
+  if (loading) return <FormSkeleton />;
   if (error || !product) return <ErrorState message={error || "Something went wrong"} onRetry={retry} />;
 
   return (

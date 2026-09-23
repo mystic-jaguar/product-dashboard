@@ -33,6 +33,8 @@ api.interceptors.response.use(
     // Session expired: log out and go to the login page.
     if (status === 401 && !isLogin && typeof window !== "undefined") {
       clearToken();
+      // Outside React there is no router; a full page load to /login is fine here.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/login";
     }
 

@@ -1,19 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { getToken } from "@/lib/token";
 import Loader from "./Loader";
 
+const noSubscribe = () => () => {};
+
 // ponytail: client-side guard because the token lives in localStorage; use a cookie + proxy if server-side auth is needed.
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [ok, setOk] = useState(false);
+  // undefined on the server, then the real token (or null) in the browser.
+  const token = useSyncExternalStore(noSubscribe, getToken, () => undefined);
 
   useEffect(() => {
-    if (getToken()) setOk(true);
-    else router.replace("/login");
-  }, [router]);
+    if (token === null) router.replace("/login");
+  }, [token, router]);
 
-  return ok ? children : <Loader />;
+  return token ? children : <Loader />;
 }

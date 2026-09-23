@@ -65,6 +65,25 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", var(--font-geist-sans), sans-serif;
 }
 
+/* Scrollbars: thin translucent pill thumb on a transparent track, following the theme. */
+:root { --scroll-thumb: #0b0b0b33; --scroll-thumb-hover: #0b0b0b59; }
+:root[data-theme="dark"] { --scroll-thumb: #ffffff2e; --scroll-thumb-hover: #ffffff52; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--scroll-thumb-hover); }
+/* Firefox has no ::-webkit-scrollbar; Chromium would drop the pill styling if given scrollbar-color. */
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-width: thin; scrollbar-color: var(--scroll-thumb) transparent; }
+}
+
 /* Fixed blurred blobs behind everything. */
 body::before {
   content: "";

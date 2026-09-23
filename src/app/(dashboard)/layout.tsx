@@ -1,0 +1,11 @@
+import AuthGuard from "@/components/AuthGuard";
+import Header from "@/components/Header";
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <AuthGuard>
+      <Header />
+      <main className="mx-auto w-full max-w-6xl flex-1 p-4">{children}</main>
+    </AuthGuard>
+  );
+}

@@ -1,5 +1,6 @@
 import type { Category } from "@/services/products";
 import { PAGE_SIZES, type ListQuery } from "@/lib/query";
+import GlassSelect from "./GlassSelect";
 
 type Props = {
   query: ListQuery;
@@ -8,57 +9,46 @@ type Props = {
 };
 
 const SORTS = [
-  ["", "Default order"],
-  ["price-asc", "Price: low to high"],
-  ["price-desc", "Price: high to low"],
-  ["rating-desc", "Rating: high to low"],
-  ["rating-asc", "Rating: low to high"],
-  ["title-asc", "Title: A–Z"],
-  ["title-desc", "Title: Z–A"],
-] as const;
+  { value: "", label: "Default order" },
+  { value: "price-asc", label: "Price: low to high" },
+  { value: "price-desc", label: "Price: high to low" },
+  { value: "rating-desc", label: "Rating: high to low" },
+  { value: "rating-asc", label: "Rating: low to high" },
+  { value: "title-asc", label: "Title: A–Z" },
+  { value: "title-desc", label: "Title: Z–A" },
+];
+
+const SIZES = PAGE_SIZES.map((n) => ({ value: String(n), label: `${n} per page` }));
 
 export default function Filters({ query, categories, onChange }: Props) {
   const sortValue = query.sortBy ? `${query.sortBy}-${query.order}` : "";
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-      <select
-        className="input"
+      <GlassSelect
         aria-label="Category"
         value={query.category}
+        options={[{ value: "", label: "All categories" }, ...categories.map((c) => ({ value: c.slug, label: c.name }))]}
         // Picking a category clears the search (the API can't do both at once).
-        onChange={(e) => onChange({ category: e.target.value, q: "" })}
-      >
-        <option value="">All categories</option>
-        {categories.map((c) => (
-          <option key={c.slug} value={c.slug}>{c.name}</option>
-        ))}
-      </select>
+        onChange={(category) => onChange({ category, q: "" })}
+      />
 
-      <select
-        className="input"
+      <GlassSelect
         aria-label="Sort"
         value={sortValue}
-        onChange={(e) => {
-          const [sortBy, order] = e.target.value.split("-") as [ListQuery["sortBy"], ListQuery["order"]];
+        options={SORTS}
+        onChange={(v) => {
+          const [sortBy, order] = v.split("-") as [ListQuery["sortBy"], ListQuery["order"]];
           onChange({ sortBy: sortBy || "", order: order ?? "asc" });
         }}
-      >
-        {SORTS.map(([value, label]) => (
-          <option key={value} value={value}>{label}</option>
-        ))}
-      </select>
+      />
 
-      <select
-        className="input"
+      <GlassSelect
         aria-label="Page size"
-        value={query.limit}
-        onChange={(e) => onChange({ limit: Number(e.target.value) })}
-      >
-        {PAGE_SIZES.map((n) => (
-          <option key={n} value={n}>{n} per page</option>
-        ))}
-      </select>
+        value={String(query.limit)}
+        options={SIZES}
+        onChange={(v) => onChange({ limit: Number(v) })}
+      />
     </div>
   );
 }

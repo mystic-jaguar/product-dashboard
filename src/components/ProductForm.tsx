@@ -10,6 +10,7 @@ import {
 } from "@/lib/validateProduct";
 import type { ProductInput } from "@/services/products";
 import Field from "./Field";
+import GlassSelect from "./GlassSelect";
 
 type Props = {
   initial?: Partial<ProductFormValues>;
@@ -69,12 +70,16 @@ export default function ProductForm({ initial, submitLabel, onSubmit, onCancel }
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Category" error={errors.category}>
-          <select className="input" value={values.category} onChange={set("category")} aria-invalid={!!errors.category}>
-            <option value="">Choose…</option>
-            {options.map((c) => (
-              <option key={c.slug} value={c.slug}>{c.name}</option>
-            ))}
-          </select>
+          <GlassSelect
+            aria-label="Category"
+            aria-invalid={!!errors.category}
+            value={values.category}
+            options={options.map((c) => ({ value: c.slug, label: c.name }))}
+            onChange={(category) => {
+              setValues((v) => ({ ...v, category }));
+              setErrors((er) => ({ ...er, category: undefined }));
+            }}
+          />
         </Field>
         <Field label="Brand (optional)">
           <input className="input" value={values.brand} onChange={set("brand")} />

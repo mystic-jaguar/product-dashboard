@@ -52,7 +52,7 @@ export default function ProductList() {
         <Link href="/products/new" className="btn-primary">Add product</Link>
       </div>
 
-      <div className="card space-y-2 p-3">
+      <div className="card relative z-10 space-y-2 p-3">
         <SearchBox value={query.q} onSearch={onSearch} />
         <Filters query={query} categories={categories} onChange={update} />
       </div>

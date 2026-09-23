@@ -20,9 +20,25 @@ export default function ThemeToggle() {
       className="btn w-9 px-0"
       aria-label={`Switch to ${next} theme`}
       title={`Switch to ${next} theme`}
-      onClick={() => {
-        document.documentElement.dataset.theme = next;
-        try { localStorage.setItem("theme", next); } catch {}
+      onClick={(e) => {
+        const apply = () => {
+          document.documentElement.dataset.theme = next;
+          try { localStorage.setItem("theme", next); } catch {}
+        };
+        // No View Transitions support (older Firefox/Safari) or reduced motion: switch instantly.
+        if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) return apply();
+
+        // Grow a circle from the button's centre until it covers the farthest corner.
+        const r = e.currentTarget.getBoundingClientRect();
+        const x = r.left + r.width / 2;
+        const y = r.top + r.height / 2;
+        const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        document.startViewTransition(apply).ready.then(() => {
+          document.documentElement.animate(
+            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+            { duration: 550, easing: "cubic-bezier(0.4, 0, 0.2, 1)", pseudoElement: "::view-transition-new(root)" }
+          );
+        });
       }}
     >
       {theme === "dark" ? (
